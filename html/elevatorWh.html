@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>新增电梯页面</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+</head>
+<style>
+    .layui-card .find {
+        margin-top: 15px;
+    }
+
+    .layui-card .find .layui-input-block {
+        width: 65%;
+    }
+
+    .layui-row .layui-btn-container {
+        margin-top: 40px;
+    }
+
+    .layui-row .layui-btn-container .layui-btn {
+        margin-left: 100px;
+    }
+
+    .layui-row .layui-btn-container .first {
+        margin-left: 35px !important;
+    }
+
+    .btn-group {
+        margin-top: 50px;
+        width: 400px;
+        left: calc(100% - 400px);
+    }
+</style>
+
+<body class="admin-body">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+        <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+        <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <div class="content">
+        <div class="layui-fluid" style="padding-top:15px">
+            <div class="layui-card">
+                <div class="layui-form">
+                    <div class="layui-row">
+                        <div class="layui-col-md4 find">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">*物业区域</label>
+                                <div class="layui-input-block">
+                                    <select name="city" lay-verify="required">
+                                        <option value="">请选择物业区域</option>
+                                        <option value="0">区域1</option>
+                                        <option value="1">区域2</option>
+                                        <option value="2">区域3</option>
+                                        <option value="3">区域4</option>
+                                        <option value="4">区域5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md4 find">
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <select name="city" lay-verify="required">
+                                        <option value="">请选择电梯类型</option>
+                                        <option value="0">类型1</option>
+                                        <option value="1">类型2</option>
+                                        <option value="2">类型3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md4 find">
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <select name="city" lay-verify="required">
+                                        <option value="">请选择电梯品牌</option>
+                                        <option value="0">品牌1</option>
+                                        <option value="1">品牌2</option>
+                                        <option value="2">品牌3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-normal first">查询</button>
+                            <button class="layui-btn layui-btn-normal">电梯导入</button>
+                            <button class="layui-btn layui-btn-normal">电梯导出</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form">
+                    <div class="layui-btn-container btn-group" style="position: relative;">
+                        <button class="layui-btn layui-btn-sm" id="addElec">新增垂直电梯</button>
+                        <button class="layui-btn layui-btn-sm" id="camreaList">摄像头列表</button>
+                        <button class="layui-btn layui-btn-sm" lay-event="stateInfo">实时状态信息</button>
+                        <button class="layui-btn layui-btn-sm" id="eleList">电梯配件列表</button>
+                    </div>
+                    <table class="layui-hide" id="elevatorTable" lay-filter="elevatorTable"></table>
+                    <script type="text/html" id="bar">
+                        <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+                        <a class="layui-btn layui-btn-normal layui-btn-xs">启用</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">报废</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../src/layui.js"></script>
+    <script src="../src/jquery1.12.3.js"></script>
+    <script>
+        layui.use(['form', 'laydate', 'table', 'laypage', 'element'], function () {
+            var form = layui.form,
+                laydate = layui.laydate,
+                table = layui.table,
+                laypage = layui.page,
+                element = layui.element;
+
+            table.render({
+                elem: '#elevatorTable'
+                , url: '../test1.json'
+                , title: '电梯维护'
+                , page: true
+                , cols: [[
+                    { type: 'checkbox', fixed: 'right' }
+                    , { field: 'id', title: 'ID' }
+                    , { field: 'elecProgram', title: '项目' }
+                    , { field: 'elecName', title: '电梯名称' }
+                    , { field: 'elecType', title: '电梯类别' }
+                    , { field: 'elecBrand', title: '电梯品牌' }
+                    , { field: 'elecCompany', title: '地区公司' }
+                    , { fixed: 'right', title: '操作', toolbar: '#bar' }
+                ]]
+
+            });
+        });
+
+
+        // 页面初始化成功
+        $(document).ready(function () {
+            // var content = ' <div style="padding: 0px;">'
+            //     + ' <iframe src="html/addElvator.html" id="main" width="100%" style="height: 100%" frameborder="0"></iframe>'
+            //     + ' </div>';
+            // 新增电梯
+            $("#addElec").on("click", function () {
+                location.href = 'elevatorWh_add.html';
+            });
+            // 摄像头列表
+            $("#camreaList").on("click", function () {
+                location.href = 'elevatorWh_cameraList.html';
+            });
+            // 配件列表
+            $("#eleList").on("click", function () {
+                location.href = 'elevatroWh_accList.html';
+            });
+
+        });
+    </script>
+</body>
+
+
+</html>

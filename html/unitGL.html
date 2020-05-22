@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>单位管理</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+</head>
+<style>
+    .layui-form-label span {
+        color: red;
+    }
+
+    #proList .layui-inline {
+        margin-left: 50px;
+    }
+
+    .btn-group {
+        position: relative;
+        margin-top: 50px;
+        width: 180px;
+        left: calc(100% - 180px);
+    }
+
+    .btn-group .layui-btn {
+        margin-bottom: 0px;
+    }
+</style>
+
+<body class="admin-body">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+        <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+        <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <div class="content">
+        <div class="layui-fluid" style="padding-top:15px">
+            <div class="layui-card">
+                <form class="layui-form" id="unitForm">
+                    <div class="layui-form-item" style="padding-top: 20px;">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span>*</span>单位名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="unit_name" placeholder="请输入单位名称"
+                                    lay-verify="required" autocomplete="off" id="unitName">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span>*</span>单位类型</label>
+                            <div class="layui-input-inline">
+                                <select name="province" lay-filter="unitType" name="unit_type" autocomplete="off"
+                                    lay-verify='required'>
+                                    <option value="">请选择单位类型</option>
+                                    <option value="0">物业单位</option>
+                                    <option value="1">维保单位</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-btn-container" style="margin-left: 35px;">
+                                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search"
+                                    style="margin-bottom: 0px;">查询</button>
+                                <button class="layui-btn layui-btn-primary"
+                                    style="margin-bottom: 0px;margin-left: 20px;" type="reset" id="reset">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form class="layui-form" style="margin-top: 50px;">
+                    <div class="layui-btn-container btn-group" style="position: relative;">
+                        <button type="button" class="layui-btn layui-btn-sm" id="add_unit">新增</button>
+                        <button type="button" class="layui-btn layui-btn-sm" id="edit_unit">修改</button>
+                        <button type="button" class="layui-btn layui-btn-sm" id="del_unit">删除</button>
+                    </div>
+                    <table class="layui-hide" id="unitTable" lay-filter="unitTable"></table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../src/layui.js"></script>
+    <script src="../src/jquery1.12.3.js"></script>
+    <script>
+        var dataP = "";
+        var flag;
+        var checkName;
+        layui.use(['form', 'laydate', 'table', 'laypage', 'element'], function () {
+            var form = layui.form,
+                laydate = layui.laydate,
+                table = layui.table,
+                laypage = layui.page,
+                element = layui.element;
+
+            // 查询
+            form.on('submit(search)', function (data) {
+                // console.log(data.field);
+                var info = data.field;
+                $.ajax({
+                    url: '../test8.json',
+                    dataType: "json",   //返回格式为json
+                    data: data.field,
+                    async: true,
+                    type: "get",   //请求方式
+                    success: function (res) {
+                        var data = res.data;
+                        if (res.code === 0) {
+                            layer.msg('查询成功', { icon: 6, time: 1000 }, function () {
+                                location.href = "../html/unitGL.html";
+                                // 重新渲染表格
+                            });
+                        } else {
+                            layer.msg('数据提交失败', { icon: 6 });
+                        }
+                    },
+                    error: function () {
+                        //请求出错处理
+                        layer.msg('数据提交失败', { icon: 5 });
+                    }
+                });
+                return false;
+            });
+
+            // 初始化表格
+            table.render({
+                elem: '#unitTable'
+                , url: '../test8.json'
+                , title: '单位管理'
+                , page: true
+                , cols: [[
+                    { type: 'checkbox', fixed: 'right' }
+                    , { field: 'unit_ID', title: '单位ID' }
+                    , { field: 'unit_name', title: '单位名称' }
+                    , { field: 'unit_type', title: '单位类型' }
+                    , { field: 'create_time', title: '创建时间' }
+                    , { field: 'update_time', title: '更新时间' }
+                ]]
+            });
+
+            //新增/修改单位管理
+            function unitList(url, title) {
+                layer.open({
+                    type: 1,
+                    title: title,
+                    area: ['450px', '450px'],
+                    setwin: ['min', 'max'],
+                    shadeClose: false,
+                    content: $("#unitListForm"),
+                    btn: ['保存', '取消'],
+                    skin: 'layui-layer-molv',
+                    success: function (index, layero) {
+                        form.on('submit(accBtn)', function (data) {
+                            $.ajax({
+                                url: url,
+                                dataType: "json",   //返回格式为json
+                                data: "",
+                                async: true,
+                                type: "get",   //请求方式
+                                success: function (res) {
+                                    var data = res.data;
+                                    if (res.code === 0) {
+                                        layer.msg('数据提交成功',
+                                            {
+                                                icon: 6,
+                                                time: 1000
+                                            }, function () {
+                                                location.href = "../html/unitGL.html";
+                                            });
+                                    } else {
+                                        layer.msg('数据提交失败', { icon: 6 });
+                                    }
+                                },
+                                error: function () {
+                                    //请求出错处理
+                                    layer.msg('数据提交失败', { icon: 5 });
+                                }
+                            });
+                            return false;
+                        });
+
+                    },
+                    yes: function (index, layero) {
+                        $("#accBtn").click();
+                    },
+                    btn2: function (index, layero) { // 取消按钮回调函数
+                        layer.close(index); // 关闭弹出层
+                        location.href = "../html/unitGL.html";
+                    }
+                });
+            };
+
+            //调用新增
+            $("#add_unit").on("click", function () {
+                unitList("../test8.json", "新增数据");
+            });
+
+            // 调用编辑
+            $("#edit_unit").on("click", function () {
+                var checkStatus = table.checkStatus('unitTable');
+                var arr = checkStatus.data;
+                if (arr.length == 0) {
+                    layer.alert("请先勾选需要编辑的数据");
+                } else if (arr.length > 1) {
+                    layer.alert("每次只能勾选一条数据进行编辑", function () {
+                        location.reload();
+                    });
+                } else {
+                    unitList("../test8.json", "修改数据");
+                    // 拿到接口进行table.render();重新渲染表格
+                }
+            });
+
+            // 删除项目
+            $("#del_unit").on("click", function () {
+                var checkStatus = table.checkStatus('unitTable');
+                var delArr = checkStatus.data;
+                var all = checkStatus.isAll;
+                if (delArr.length == 0) {
+                    layer.alert("请先勾选需要删除的数据");
+                } else if (all == true) {
+                    layer.alert("您确定要删除全部数据吗？", function (index) {
+                        // 点击确定按钮的回调函数：拿到接口重新渲染表格
+                        $.ajax({
+                            url: '../test5.json',
+                            dataType: "json",   //返回格式为json
+                            data: delArr,
+                            async: true,
+                            type: "get",   //请求方式
+                            success: function (res) {
+                                table.render({
+                                    elem: '#unitTable'
+                                    , url: '../test8.json'
+                                    , page: true
+                                    , cols: [[
+                                        { type: 'checkbox', fixed: 'right' }
+                                        , { field: 'unit_ID', title: '单位ID' }
+                                        , { field: 'unit_name', title: '单位名称' }
+                                        , { field: 'unit_type', title: '单位类型' }
+                                        , { field: 'create_time', title: '创建时间' }
+                                        , { field: 'update_time', title: '更新时间' }
+                                    ]]
+                                });
+                                layer.msg('删除成功', { icon: 6 });
+                                layer.close(index);
+                            },
+                            error: function () {
+                                //请求出错处理
+                                layer.msg('删除失败', { icon: 5 });
+                                layer.close(index);
+                            }
+                        });
+                    });
+                } else {
+                    layer.alert('确定删除这' + delArr.length + '条数据吗', function (index) {
+                        $.ajax({
+                            url: '../test8.json',
+                            dataType: "json",   //返回格式为json
+                            data: delArr,
+                            async: true,
+                            type: "get",   //请求方式
+                            success: function (res) {
+                                table.render({
+                                    elem: '#unitTable'
+                                    , url: '../test8.json'
+                                    , page: true
+                                    , cols: [[
+                                        { type: 'checkbox', fixed: 'right' }
+                                        , { field: 'unit_ID', title: '单位ID' }
+                                        , { field: 'unit_name', title: '单位名称' }
+                                        , { field: 'unit_type', title: '单位类型' }
+                                        , { field: 'create_time', title: '创建时间' }
+                                        , { field: 'update_time', title: '更新时间' }
+                                    ]]
+                                });
+                                layer.msg('删除成功', { icon: 6 });
+                                layer.close(index);
+                            },
+                            error: function () {
+                                //请求出错处理
+                                layer.msg('删除失败', { icon: 5 });
+                                layer.close(index);
+                            }
+                        });
+                    });
+                };
+            });
+        });
+
+        // 页面初始化成功
+        $(document).ready(function () {
+
+
+        });
+    </script>
+    <!-- 新增/修改项目 -->
+    <form class="layui-form" action="" id="unitListForm" style="display: none;">
+        <div class="layui-form-item" style="margin-top: 20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>单位ID：</label>
+                <div class="layui-form-mid layui-word-aux" style="color: black;">2020-012-58214510</div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>单位名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="pro_name" lay-verify="required" autocomplete="off" class="layui-input"
+                        value="" placeholder="请输入单位名称">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>单位类型</label>
+                <div class="layui-input-inline">
+                    <select name="unit_type" lay-filter="unitType" lay-verify='required'>
+                        <option value="">请选择单位类型</option>
+                        <option value="0">物业单位</option>
+                        <option value="1">维保单位</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- 提交按钮 -->
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="width:50px;display: none;">
+                <button class="layui-btn layui-btn-primary" id="accBtn" lay-submit lay-filter="accBtn">保存</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

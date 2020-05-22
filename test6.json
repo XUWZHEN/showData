@@ -1,0 +1,26 @@
+{
+    "code": 0,
+    "msg": "暂无数据",
+    "data": [
+        {
+            "orderID":"2020-112-30x54",
+            "orderStatus":"处理中",
+            "proName":"华润项目小区",
+            "elecNum":"010-1201220124",
+            "position": "位置1",
+            "desc":"电梯故障",
+            "type":"维修工单",
+            "reporter":"某莫某"
+        },
+        {
+            "orderID":"2020-1124",
+            "orderStatus":"已接单",
+            "proName":"测试小区",
+            "elecNum":"010-12012201",
+            "position": "位置2",
+            "desc":"电梯保养",
+            "type":"保养工单",
+            "reporter":"某莫某"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "code": 0,
+    "msg": "暂无数据",
+    "data": [
+        {
+            "unit_ID":"2020-112-30x54",
+            "unit_name":"华润项目小区",
+            "unit_type":"类型1",
+            "create_time":"2020-02-03",
+            "update_time":"2020-03-02"
+            
+        },
+        {
+            "unit_ID":"2020-112-30x54",
+            "unit_name":"小区2",
+            "unit_type":"类型2",
+            "create_time":"2020-02-03",
+            "update_time":"2020-03-02"
+            
+        }
+    ]
+}

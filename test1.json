@@ -1,0 +1,46 @@
+{
+    "code": 0,
+    "msg": "暂无数据",
+    "data": [
+        {
+            "id":114745456484564,
+            "elecProgram":"项目一号",
+            "elecName": "电梯一号",
+            "elecType": "类型一号",
+            "elecBrand": "品牌一号",
+            "elecCompany":"上海分部公司"
+        },
+        {
+            "id":100022,
+            "elecProgram":"项目2号",
+            "elecName": "电梯2号",
+            "elecType": "类型2号",
+            "elecBrand": "品牌2号",
+            "elecCompany":"北京分部公司"
+        },
+        {
+            "id":100033,
+            "elecProgram":"项目3号",
+            "elecName": "电梯3号",
+            "elecType": "类型3号",
+            "elecBrand": "品牌3号",
+            "elecCompany":"重庆分部公司"
+        },
+        {
+            "id":100045,
+            "elecProgram":"项目4号",
+            "elecName": "电梯4号",
+            "elecType": "类型4号",
+            "elecBrand": "品牌4号",
+            "elecCompany":"南京分部公司"
+        },
+        {
+            "id":100066,
+            "elecProgram":"项目6号",
+            "elecName": "电梯6号",
+            "elecType": "类型6号",
+            "elecBrand": "品牌6号",
+            "elecCompany":"深圳分部公司"
+        }
+    ]
+}

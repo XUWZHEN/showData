@@ -1,0 +1,26 @@
+{
+    "code": 0,
+    "msg": "暂无数据",
+    "data": [
+        {
+            "staff_ID":"000102001",
+            "staff_name":"李达康",
+            "staff_type":"类型1",
+            "staff_phone":"13244568123",
+            "staff_com":"华润科技",
+            "create_time":"2020-02-03",
+            "update_time":"2020-03-02"
+            
+        },
+        {
+            "staff_ID":"000102002",
+            "staff_name":"林黛玉",
+            "staff_type":"类型2",
+            "staff_phone":"18255421569",
+            "staff_com":"西南科技有限公司",
+            "create_time":"2020-02-03",
+            "update_time":"2020-03-02"
+            
+        }
+    ]
+}

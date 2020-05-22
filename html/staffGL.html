@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>单位管理</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+</head>
+<style>
+    .layui-form-label span {
+        color: red;
+    }
+
+    #proList .layui-inline {
+        margin-left: 50px;
+    }
+
+    .btn-group {
+        position: relative;
+        margin-top: 50px;
+        width: 180px;
+        left: calc(100% - 180px);
+    }
+
+    .btn-group .layui-btn {
+        margin-bottom: 0px;
+    }
+
+    .staffLsitForm .layui-input-inline {
+        width: 150px;
+    }
+</style>
+
+<body class="admin-body">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+        <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+        <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <div class="content">
+        <div class="layui-fluid" style="padding-top:15px">
+            <div class="layui-card">
+                <form class="layui-form" id="staffForm">
+                    <div class="layui-form-item" style="padding-top: 20px;">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span>*</span>姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="staff_name" placeholder="请输入人员姓名"
+                                    lay-verify="required" autocomplete="off" id="staffName">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span>*</span>人员类型</label>
+                            <div class="layui-input-inline">
+                                <select name="province" lay-filter="staffType" name="staff_type" autocomplete="off"
+                                    lay-verify='required'>
+                                    <option value="">请选择人员类型</option>
+                                    <option value="0">物业人员</option>
+                                    <option value="1">维护人员</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span>*</span>人员角色</label>
+                            <div class="layui-input-inline">
+                                <select name="province" lay-filter="staffRole" name="staff_role" autocomplete="off"
+                                    lay-verify='required'>
+                                    <option value="">请选择人员角色</option>
+                                    <option value="0">经理</option>
+                                    <option value="1">主管</option>
+                                    <option value="2">保洁员</option>
+                                    <option value="3">电梯工</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span>*</span>手机</label>
+                            <div class="layui-input-inline">
+                                <input type="phone" class="layui-input" name="staff_phone" placeholder="请输入手机号"
+                                    lay-verify="required" autocomplete="off" id="staffPhone">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span>*</span>单位名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="staff_com" placeholder="请输入单位名称"
+                                    lay-verify="required" autocomplete="off" id="staffCom">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-btn-container" style="margin-left: 35px;">
+                                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search"
+                                    style="margin-bottom: 0px;">查询</button>
+                                <button class="layui-btn layui-btn-primary"
+                                    style="margin-bottom: 0px;margin-left: 20px;" type="reset" id="reset">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form class="layui-form" style="margin-top: 50px;">
+                    <div class="layui-btn-container btn-group" style="position: relative;">
+                        <button type="button" class="layui-btn layui-btn-sm" id="add_staff">新增</button>
+                        <button type="button" class="layui-btn layui-btn-sm" id="edit_staff">修改</button>
+                        <button type="button" class="layui-btn layui-btn-sm" id="del_staff">删除</button>
+                    </div>
+                    <table class="layui-hide" id="staffTable" lay-filter="staffTable"></table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../src/layui.js"></script>
+    <script src="../src/jquery1.12.3.js"></script>
+    <script>
+        var dataP = "";
+        var flag;
+        var checkName;
+        layui.use(['form', 'laydate', 'table', 'laypage', 'element'], function () {
+            var form = layui.form,
+                laydate = layui.laydate,
+                table = layui.table,
+                laypage = layui.page,
+                element = layui.element;
+
+            // 查询
+            form.on('submit(search)', function (data) {
+                // console.log(data.field);
+                var info = data.field;
+                $.ajax({
+                    url: '../test9.json',
+                    dataType: "json",   //返回格式为json
+                    data: data.field,
+                    async: true,
+                    type: "get",   //请求方式
+                    success: function (res) {
+                        var data = res.data;
+                        if (res.code === 0) {
+                            layer.msg('查询成功', { icon: 6, time: 1000 }, function () {
+                                location.href = "../html/staffGL.html";
+                                // 重新渲染表格
+                            });
+                        } else {
+                            layer.msg('数据提交失败', { icon: 6 });
+                        }
+                    },
+                    error: function () {
+                        //请求出错处理
+                        layer.msg('数据提交失败', { icon: 5 });
+                    }
+                });
+                return false;
+            });
+
+            // 初始化表格
+            table.render({
+                elem: '#staffTable'
+                , url: '../test9.json'
+                , title: '人员管理'
+                , page: true
+                , cols: [[
+                    { type: 'checkbox', fixed: 'right' }
+                    , { field: 'staff_ID', title: '人员ID' }
+                    , { field: 'staff_name', title: '人员姓名' }
+                    , { field: 'staff_role', title: '角色' }
+                    , { field: 'staff_type', title: '类型' }
+                    , { field: 'staff_com', title: '单位名称' }
+                    , { field: 'create_time', title: '创建时间' }
+                    , { field: 'update_time', title: '更新时间' }
+                ]]
+            });
+
+            //新增/修改单位管理
+            function staffList(url, title) {
+                layer.open({
+                    type: 1,
+                    title: title,
+                    area: ['680px', '430px'],
+                    setwin: ['min', 'max'],
+                    shadeClose: false,
+                    content: $("#staffListForm"),
+                    btn: ['保存', '取消'],
+                    skin: 'layui-layer-molv',
+                    success: function (index, layero) {
+                        form.on('submit(accBtn)', function (data) {
+                            $.ajax({
+                                url: url,
+                                dataType: "json",   //返回格式为json
+                                data: "",
+                                async: true,
+                                type: "get",   //请求方式
+                                success: function (res) {
+                                    var data = res.data;
+                                    if (res.code === 0) {
+                                        layer.msg('数据提交成功',
+                                            {
+                                                icon: 6,
+                                                time: 1000
+                                            }, function () {
+                                                location.href = "../html/staffGL.html";
+                                            });
+                                    } else {
+                                        layer.msg('数据提交失败', { icon: 6 });
+                                    }
+                                },
+                                error: function () {
+                                    //请求出错处理
+                                    layer.msg('数据提交失败', { icon: 5 });
+                                }
+                            });
+                            return false;
+                        });
+
+                    },
+                    yes: function (index, layero) {
+                        $("#accBtn").click();
+                    },
+                    btn2: function (index, layero) { // 取消按钮回调函数
+                        layer.close(index); // 关闭弹出层
+                        location.href = "../html/staffGL.html";
+                    }
+                });
+            };
+
+            //调用新增
+            $("#add_staff").on("click", function () {
+                staffList("../test9.json", "新增数据");
+            });
+
+            // 调用编辑
+            $("#edit_staff").on("click", function () {
+                var checkStatus = table.checkStatus('staffTable');
+                var arr = checkStatus.data;
+                if (arr.length == 0) {
+                    layer.alert("请先勾选需要编辑的数据");
+                } else if (arr.length > 1) {
+                    layer.alert("每次只能勾选一条数据进行编辑", function () {
+                        location.reload();
+                    });
+                } else {
+                    staffList("../test9.json", "修改数据");
+                    // 拿到接口进行table.render();重新渲染表格
+                }
+            });
+
+            // 删除项目
+            $("#del_staff").on("click", function () {
+                var checkStatus = table.checkStatus('staffTable');
+                var delArr = checkStatus.data;
+                var all = checkStatus.isAll;
+                if (delArr.length == 0) {
+                    layer.alert("请先勾选需要删除的数据");
+                } else if (all == true) {
+                    layer.alert("您确定要删除全部数据吗？", function (index) {
+                        // 点击确定按钮的回调函数：拿到接口重新渲染表格
+                        $.ajax({
+                            url: '../test5.json',
+                            dataType: "json",   //返回格式为json
+                            data: delArr,
+                            async: true,
+                            type: "get",   //请求方式
+                            success: function (res) {
+                                table.render({
+                                    elem: '#staffTable'
+                                    , url: '../test9.json'
+                                    , page: true
+                                    , cols: [[
+                                        { type: 'checkbox', fixed: 'right' }
+                                        , { field: 'staff_ID', title: '人员ID' }
+                                        , { field: 'staff_name', title: '人员姓名' }
+                                        , { field: 'staff_role', title: '角色' }
+                                        , { field: 'staff_type', title: '类型' }
+                                        , { field: 'staff_com', title: '单位名称' }
+                                        , { field: 'create_time', title: '创建时间' }
+                                        , { field: 'update_time', title: '更新时间' }
+                                    ]]
+                                });
+                                layer.msg('删除成功', { icon: 6 });
+                                layer.close(index);
+                            },
+                            error: function () {
+                                //请求出错处理
+                                layer.msg('删除失败', { icon: 5 });
+                                layer.close(index);
+                            }
+                        });
+                    });
+                } else {
+                    layer.alert('确定删除这' + delArr.length + '条数据吗', function (index) {
+                        $.ajax({
+                            url: '../test9.json',
+                            dataType: "json",   //返回格式为json
+                            data: delArr,
+                            async: true,
+                            type: "get",   //请求方式
+                            success: function (res) {
+                                table.render({
+                                    elem: '#staffTable'
+                                    , url: '../test9.json'
+                                    , page: true
+                                    , cols: [[
+                                        { type: 'checkbox', fixed: 'right' }
+                                        , { field: 'staff_ID', title: '人员ID' }
+                                        , { field: 'staff_name', title: '人员姓名' }
+                                        , { field: 'staff_role', title: '角色' }
+                                        , { field: 'staff_type', title: '类型' }
+                                        , { field: 'staff_com', title: '单位名称' }
+                                        , { field: 'create_time', title: '创建时间' }
+                                        , { field: 'update_time', title: '更新时间' }
+                                    ]]
+                                });
+                                layer.msg('删除成功', { icon: 6 });
+                                layer.close(index);
+                            },
+                            error: function () {
+                                //请求出错处理
+                                layer.msg('删除失败', { icon: 5 });
+                                layer.close(index);
+                            }
+                        });
+                    });
+                };
+            });
+
+            //隶书单位ID选择
+            $("#companyID").on("click", function () {
+                layer.open({
+                    type: 1,
+                    title: "隶书单位ID查询",
+                    area: ['500px', '450px'],
+                    setwin: ['min', 'max'],
+                    shadeClose: false,
+                    content: $("#companyForm"),
+                    btn: ['确定', '取消'],
+                    skin: 'layui-layer-molv',
+                    success: function (index, layero) {
+                        form.on('submit(propertyBtn)', function (data) {
+                            $.ajax({
+                                url: "../test10.json",
+                                dataType: "json",   //返回格式为json
+                                async: true,
+                                type: "get",   //请求方式
+                                success: function (res) {
+                                    var data = res.data;
+                                    if (res.code === 0) {
+                                        // 弹出查询到的表格
+                                        table.render({
+                                            elem: '#companyTable',
+                                            page: false,
+                                            data: data,
+                                            cols: [[             //表头
+                                                {
+                                                    type: 'radio'
+                                                },
+                                                {
+                                                    field: 'com_name',
+                                                    title: "单位名称"
+                                                },
+                                                {
+                                                    field: 'com_id',
+                                                    title: '单位id'
+                                                },
+                                            ]]
+                                        });
+                                    } else {
+                                        layer.msg('查询失败', { icon: 5 });
+                                    }
+                                },
+                                error: function () {
+                                    //请求出错处理
+                                    layer.msg('查询失败', { icon: 5 });
+                                }
+                            });
+                            flag = true;
+                            return false;
+                        });
+
+                    },
+                    yes: function (index, layero) {
+                        if (flag == true) {
+                            checkName = table.checkStatus('companyTable').data[0].com_id;
+                            document.getElementById('companyID').value = checkName;
+                            layer.msg("提交成功", { icon: 6, time: 800 }, function () {
+                                layer.close(index);
+                                $("#resetBtn").click();
+                            });
+                            flag = false;
+                        } else {
+                            layer.alert("请先执行查询操作");
+                        }
+                    },
+                    btn2: function (index, layero) { // 取消按钮回调函数
+                        layer.close(index); // 关闭弹出层
+                    }
+                });
+            });
+            // 重置查询
+            $("#resetBtn").on("click", function () {
+                $("#companyForm")[0].reset();
+                $(".layui-table").css('display', 'none');
+            });
+        });
+
+        // 页面初始化成功
+        $(document).ready(function () {
+
+
+        });
+    </script>
+    <!-- 新增/修改项目 -->
+    <form class="layui-form" action="" id="staffListForm" style="display: none;">
+        <div class="layui-form-item" style="margin-top: 20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>人员ID：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="staff_id" value="001020101" lay-verify="required"
+                        autocomplete="off" id="staffID" disabled>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>手机</label>
+                <div class="layui-input-inline">
+                    <input type="phone" class="layui-input" name="staff_phone" placeholder="请输入手机号"
+                        lay-verify="required" autocomplete="off" id="staff_phone">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="staff_name" lay-verify="required" autocomplete="off" class="layui-input"
+                        value="" placeholder="请输入人员姓名">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>登陆密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" lay-verify="required" autocomplete="off" class="layui-input"
+                        value="" placeholder="请输入登陆密码">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>类型</label>
+                <div class="layui-input-inline">
+                    <select name="staff_type" lay-filter="staffType" lay-verify='required'>
+                        <option value="">请选择人员类型</option>
+                        <option value="0">物业人员</option>
+                        <option value="1">维护人员</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>隶书单位ID</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="company_id" lay-verify="required" id="companyID" autocomplete="off"
+                        class="layui-input" value="" placeholder="请输入单位ID">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>角色</label>
+                <div class="layui-input-inline">
+                    <select name="staff_type" lay-filter="staffType" lay-verify='required'>
+                        <option value="">请选择角色</option>
+                        <option value="0">经理</option>
+                        <option value="1">主管</option>
+                        <option value="2">保洁员</option>
+                        <option value="3">电梯工</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label"><span>*</span>单位名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="staff_company" value="西南科技有限公司" lay-verify="required"
+                        autocomplete="off" id="staffCompany" disabled>
+                </div>
+            </div>
+        </div>
+        <!-- 提交按钮 -->
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="width:50px;display: none;">
+                <button class="layui-btn layui-btn-primary" id="accBtn" lay-submit lay-filter="accBtn">保存</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- 隶书单位查询 -->
+    <form class="layui-form" action="" lay-filter="companyForm" id="companyForm" style="display: none;">
+        <div class="layui-form-item" style="margin-top:20px">
+            <div class="layui-inline">
+                <label class="layui-form-label" style="width:100px;">单位名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" placeholder="请输入单位名称" name="company_name" lay-verify="required"
+                        class="layui-input" lay-filter="company_name" autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline" style="width:50px; margin-left:150px;">
+                <button class="layui-btn layui-btn-normal" id="propertyBtn" lay-submit
+                    lay-filter="propertyBtn">查询</button>
+            </div>
+            <div class="layui-input-inline" style="width:50px; margin-left:20px;">
+                <button type="button" class="layui-btn layui-btn-primary" type="reset" id="resetBtn">重置</button>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <table style="margin-top: 30px;" id="companyTable" lay-filter="companyable"> </table>
+        </div>
+    </form>
+</body>
+
+</html>

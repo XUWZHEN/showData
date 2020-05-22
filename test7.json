@@ -1,0 +1,22 @@
+{
+    "code": 0,
+    "msg": "暂无数据",
+    "data": [
+        {
+            "pro_ID":"2020-112-30x54",
+            "pro_name":"华润项目小区",
+            "pro_address":"江宁区某某街道xx小区18栋一单元304",
+            "property_num": "100120022-235412",
+            "Property_name":"绿地物业",
+            "create_time":"2020-02-03"
+        },
+        {
+            "pro_ID":"2020-112-30x54",
+            "pro_name":"测试小区",
+            "pro_address":"江宁区某某街道xx小区18栋一单元304",
+            "property_num": "100120022-235412",
+            "Property_name":"绿地物业",
+            "create_time":"2020-04-05"
+        }
+    ]
+}

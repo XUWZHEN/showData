@@ -1,0 +1,46 @@
+{
+    "code": 0,
+    "msg": "暂无数据",
+    "data": [
+        {
+            "id":1000112,
+            "camName":"摄像头1",
+            "camPosition":"左上方35°",
+            "camAngle":"位置1",
+            "camTime": "2020-05-01",
+            "camCompany":"北京公司"
+        },
+        {
+            "id":10001122,
+            "camName":"摄像头2",
+            "camPosition":"上方35°",
+            "camAngle":"位置2",
+            "camTime": "2020-05-02",
+            "camCompany":"上海公司"
+        },
+        {
+            "id":1001123,
+            "camName":"摄像头3",
+            "camPosition":"后右方23°",
+            "camAngle":"位置3",
+            "camTime": "2020-05-03",
+            "camCompany":"重庆公司"
+        },
+        {
+            "id":1022342,
+            "camName":"摄像头4",
+            "camPosition":"上方35°",
+            "camAngle":"位置4",
+            "camTime": "2020-05-04",
+            "camCompany":"深圳公司"
+        },
+        {
+            "id":10001152,
+            "camName":"摄像头5",
+            "camPosition":"右上方45°",
+            "camAngle":"位置5",
+            "camTime": "2020-05-05",
+            "camCompany":"南京分公司"
+        }
+    ]
+}

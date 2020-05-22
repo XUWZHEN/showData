@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>新增垂直电梯页面</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+</head>
+<style>
+    /* .layui-form-label{
+        width: 90px;
+    }
+    .layui-form-label span{
+        color: red;
+    }
+    .layui-word-aux{
+        color: rgba(30, 159, 255, 1)!important;
+    }
+    .layui-nav-tree{
+        width: 400px;
+    } */
+    #addElecForm .layui-form-label {
+        width: 90px !important;
+    }
+
+    #addElecForm label .note {
+        color: red;
+    }
+
+    .layui-form-select dl dd.layui-this {
+        background-color: #1E9FFF !important;
+    }
+
+    #areaP .layui-input-block {
+        margin-bottom: 20px !important;
+    }
+
+    #deviceTable .layui-border-box {
+        margin-left: 18px !important;
+    }
+
+    .layui-nav-tree {
+        left: 30px !important;
+        width: 400px !important;
+        top: 20px !important;
+    }
+
+    .layui-nav {
+        background: #ffffff !important;
+    }
+
+    .layui-nav .layui-nav-item a {
+        color: black !important;
+    }
+
+    .layui-nav .layui-nav-mored,
+    .layui-nav-itemed>a .layui-nav-more {
+        border-color: transparent transparent #99a9bf !important;
+    }
+
+    .layui-nav .layui-nav-more {
+        border-color: #99a9bf transparent transparent !important;
+    }
+
+    .layui-nav-tree .layui-nav-item a:hover {
+        background-color: #eff7ff !important;
+    }
+
+    .layui-nav-itemed>.layui-nav-child {
+        background-color: white !important;
+    }
+
+    .layui-word-aux {
+        color: #1E9FFF !important;
+    }
+
+    .more {
+        margin-left: 24px;
+    }
+</style>
+
+<body>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+        <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+        <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 新增电梯页面 -->
+    <div class="layadmin-body" id="addEleM">
+        <div class="layui-fluid" style="padding-top: 15px;">
+            <div class="layui-card">
+                <form class="layui-form" action="" id="addElecForm" lay-filter="addElecForm">
+                    <div class="layui-form-item">
+                        <div class="layui-inline" style="margin-top:20px">
+                            <label class="layui-form-label" id="tt"><span class="note">*</span>项目</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请选择区域项目" name="xiangmu" lay-verify="required"
+                                    lay-reqText="未选择区域项目" class="layui-input" id="choose_p" lay-filter="choose_program"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span class="note">*</span>品牌</label>
+                            <div class="layui-input-inline">
+                                <select name="xiangmu" lay-verify="required" lay-reqText="未选择电梯品牌">
+                                    <option value="">请选择电梯品牌</option>
+                                    <option value="0">品牌1</option>
+                                    <option value="1">品牌2</option>
+                                    <option value="2">品牌3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span class="note">*</span>电梯类型</label>
+                            <div class="layui-input-inline">
+                                <select name="xiangmu" lay-verify="required" lay-reqText="未选择电梯类型">
+                                    <option value="">请选择电梯类型</option>
+                                    <option value="0">类型1</option>
+                                    <option value="1">类型2</option>
+                                    <option value="2">类型3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span class="note">*</span>电梯位置</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请选择电梯位置" name="elecPosition" lay-verify="required"
+                                    lay-reqText="未选择电梯位置" class="layui-input" id="ele_position" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="layui-inline more">
+                            <label class="layui-form-label"><span class="note">*</span>经度</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯经度" name="elecLong" value="E24°"
+                                    lay-verify="required" lay-reqText="请输入电梯经度" class="layui-input" id="longitude"
+                                    disabled>
+                            </div>
+                        </div>
+                        <div class="layui-inline more">
+                            <label class="layui-form-label"><span class="note">*</span>纬度</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯纬度" name="elecLat" lay-verify="required"
+                                    lay-reqText="请输入电梯纬度" class="layui-input" id="latitude" value="W25°" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span class="note">*</span>电梯使用年限</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯使用年限" name="elcyear" lay-verify="required"
+                                    lay-reqText="未填写电梯使用年限" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">年</div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span class="note">*</span>电梯登记机关</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯登记机关" name="eti" lay-verify="required"
+                                    lay-reqText="未填写电梯登记机关" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span class="note">*</span>电梯名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯名称" name="elec_name" lay-verify="required"
+                                    lay-reqText="未输入电梯名称" class="layui-input" id="elec_name">
+                            </div>
+                        </div>
+                        <div class="layui-inline more">
+                            <label class="layui-form-label"><span class="note">*</span>电梯编号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="elec_num" value="23514" disabled lay-verify="required"
+                                    class="layui-input" id="elec_num">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span class="note">*</span>电梯使用单位</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯使用单位" name="elec_use" lay-verify="required"
+                                    class="layui-input" id="elec_use" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span class="note">*</span>电梯维保单位</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯维保单位" name="elec_repair" lay-verify="required"
+                                    class="layui-input" id="elec_repair" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <label class="layui-form-label"><span class="note">*</span>关联设施</label>
+                        <div class="layui-input-inline">
+                            <input type="text" placeholder="请选择关联设施编号" name="device_num" lay-verify="required"
+                                lay-reqText="未选择关联设施编号" class="layui-input" id="device_num" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">累计运行里程</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯累计入运行里程" name="kio" lay-verify="required"
+                                    lay-reqText="未填写电梯累计运行里程数" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(km)</div>
+                        </div>
+                        <div class="layui-inline more">
+                            <label class="layui-form-label">累计运行次数</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯累计运行次数" name="eTwice" lay-verify="required"
+                                    lay-reqText="未填写电梯累计运行次数" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(次)</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top:20px">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">累计运行时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯累计运行时间" name="eTime" lay-verify="required"
+                                    lay-reqText="未填写电梯累计运行时间" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(H)</div>
+                        </div>
+                        <div class="layui-inline" style="margin-left: 32px;">
+                            <label class="layui-form-label">累计开门次数</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="请输入电梯累计开门系数" name="eopen" lay-verify="required"
+                                    lay-reqText="未填写电梯累计开门次数" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(次)</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="height: 150px;">
+                        <div class="layui-input-block" style="margin-top: 45px;">
+                            <button class="layui-btn" lay-submit lay-filter="addElecForm" id="addElecForm">提交</button>
+                            <button class="layui-btn layui-btn-primary" style="margin-left: 20px;"
+                                lay-filter="cancleElecForm" id="cancleElecForm">取消</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../src/layui.js"></script>
+    <script src="../src/jquery1.12.3.js"></script>
+    <script>
+        // 项目区域选择
+        var dataAreaP = "";
+        var click_device = false;
+        var checkStatusNum = "";
+        var checkRepairName = "";
+        layui.use(['form', 'laydate', 'table', 'laypage', 'element'], function () {
+            var form = layui.form,
+                laydate = layui.laydate,
+                table = layui.table,
+                laypage = layui.page,
+                element = layui.element;
+
+            //确定提交表单
+            form.on('submit(addElecForm)', function (data) {
+                $.ajax({
+                    url: "../test1.json",
+                    dataType: "json",   //返回格式为json
+                    async: true,
+                    data: data.field,    //参数值
+                    type: "POST",   //请求方式
+                    success: function (req) {
+                        if (req.code === 1) {
+                            layer.msg('提交成功', { icon: 6 });
+                            location.reload();
+                            form.render();
+                        } else {
+                            layer.msg('提交失败', { icon: 5 });
+                        }
+                    },
+                    error: function () {
+                        //请求出错处理
+                        layer.msg('提交失败', { icon: 5 });
+                    }
+                });
+                return false;
+            });
+            // 点击取消事件
+            $("#cancleElecForm").on("click", function () {
+                location.href = "../html/elevatorWh.html"
+            });
+
+            // 选择项目区域
+            $('#choose_p').on('click', function () {
+                layer.open({
+                    type: 1,
+                    title: "项目/区域选择",
+                    area: ['500px', '450px'],
+                    setwin: ['min', 'max'],
+                    shadeClose: true,
+                    content: $("#areaP"),
+                    btn: ['确定', '取消'],
+                    skin: 'layui-layer-rim',
+                    success: function (index, layero) {
+                        $(".layui-nav-item").on("click", function () {
+                            $(".layui-nav-item").removeClass('layui-nav-itemed');
+                            $(this).addClass("layui-nav-itemed");
+                        });
+                        element.on('nav(areaP)', function (elem) {
+                            dataAreaP = elem.context.text;
+                        });
+                    },
+                    yes: function (index, layero) {
+                        if (dataAreaP == "" || dataAreaP == undefined) {
+                            console.log(dataAreaP);
+                            layer.msg('请选择项目或者区域', { icon: 5 });
+                        } else {
+                            $("#choose_p").val(dataAreaP);
+                            layer.close(index); // 关闭弹出层
+                        }
+                    },
+                    btn2: function (index, layero) {  // 取消按钮回调函数
+                        layer.close(index); // 关闭弹出层
+                    }
+                })
+            });
+
+            // 关联设施编号
+            $('#device_num').on('click', function () {
+                layer.open({
+                    type: 1,
+                    title: "关联设施编号",
+                    area: ['500px', '450px'],
+                    setwin: ['min', 'max'],
+                    shadeClose: true,
+                    resize: true,
+                    fixed: false,
+                    content: $("#deviceForm"),
+                    btn: ['确定', '取消'],
+                    skin: 'layui-layer-molv',
+                    success: function (index, layero) {
+                        form.on('submit(deviceForm)', function (data) {
+                            $.ajax({
+                                url: "../test.json",
+                                dataType: "json",   //返回格式为json
+                                async: true,
+                                data: "../test.json",    //参数值
+                                type: "get",   //请求方式
+                                success: function (res) {
+                                    if (res.code === 0) {
+                                        // 弹出查询到的表格
+                                        table.render({
+                                            elem: '#deviceTable',
+                                            url: '../test.json',    //数据接口
+                                            title: '查询到的设备',
+                                            page: false,
+                                            cols: [[             //表头
+                                                {
+                                                    type: 'radio'
+                                                },
+                                                {
+                                                    field: 'de_num',
+                                                    title: '设施编号',
+                                                },
+                                                {
+                                                    field: 'de_name',
+                                                    title: '设备名称',
+                                                }
+                                            ]]
+                                        });
+                                    } else {
+                                        layer.msg('请求失败', { icon: 5 });
+                                    }
+                                },
+                                error: function () {
+                                    //请求出错处理
+                                    layer.msg('请求失败', { icon: 5 });
+                                }
+                            });
+                            click_device = true;
+                            return false;
+                        });
+                    },
+                    yes: function (index, layero) {
+                        if (click_device == true) {
+                            var checkStatus = table.checkStatus('deviceTable');
+                            checkStatusNum = checkStatus.data[0];
+                            console.log(checkStatusNum);
+                            $("#device_num").val(checkStatusNum.de_num);
+                            layer.close(index);   // 关闭弹窗
+                            form.render();
+
+                        } else {
+                            layer.alert("请先执行查询操作");
+                        }
+                    },
+                    btn2: function (index, layero) { // 取消按钮回调函数
+                        layer.close(index); // 关闭弹出层
+                    }
+                });
+            });
+
+            // 电梯使用单位
+            $("#elec_use").on("click", function () {
+                layer.open({
+                    type: 1,
+                    title: "查询电梯的使用单位",
+                    area: ['500px', '450px'],
+                    setwin: ['min', 'max'],
+                    shadeClose: true,
+                    content: $("#elecUseForm"),
+                    btn: ['确定', '取消'],
+                    skin: 'layui-layer-molv',
+                    success: function (index, layero) {
+                        form.on('submit(elecUseBtn)', function (data) {
+                            $.ajax({
+                                url: "../test2.json",
+                                dataType: "json",   //返回格式为json
+                                async: true,
+                                type: "get",   //请求方式
+                                success: function (res) {
+                                    var data = res.data;
+                                    if (res.code === 0) {
+                                        // 弹出查询到的表格
+                                        table.render({
+                                            elem: '#elecUseTable',
+                                            title: '查询到的设备',
+                                            page: false,
+                                            data: data,
+                                            cols: [[             //表头
+                                                {
+                                                    type: 'radio'
+                                                },
+                                                {
+                                                    field: 'com_name',
+                                                    title: '单位名称',
+                                                },
+                                            ]]
+                                        });
+                                    } else {
+                                        layer.msg('查询失败', { icon: 5 });
+                                    }
+                                },
+                                error: function () {
+                                    //请求出错处理
+                                    layer.msg('查询失败', { icon: 5 });
+                                }
+                            });
+                            click_device = true;
+                            return false;
+                        });
+
+                    },
+                    yes: function (index, layero) {
+                        if (click_device == true) {
+                            var checkName = table.checkStatus('elecUseTable').data[0].com_name;
+                            $("#elec_use").val(checkName);
+                            layer.close(index);   // 关闭弹窗
+                            form.render();
+                            $("#useResetBtn").click();
+                        } else {
+                            layer.alert("请先执行查询操作");
+                        }
+                    },
+                    btn2: function (index, layero) { // 取消按钮回调函数
+                        layer.close(index); // 关闭弹出层
+                    }
+                });
+            });
+
+            // 重置查询
+            $("#useResetBtn").on("click", function () {
+                $("#elecUseForm")[0].reset();
+                $(".layui-table").css('display', 'none');
+            });
+
+        });
+    </script>
+
+
+
+    <!-- 选择项目区域 -->
+    <div class="layui-pro layui-form">
+        <ul class="layui-nav layui-nav-tree" type="nav" lay-filter="areaP" id="areaP" style="display: none;">
+            <li class="layui-nav-item"><a href="#">华润湾湾</a></li>
+            <li class="layui-nav-item"><a href="#">千丁软件园</a></li>
+            <li class="layui-nav-item"><a href="#">Li项目</a></li>
+            <li class="layui-nav-item"><a href="#">贾府</a></li>
+            <li class="layui-nav-item"><a href="#">HH项目</a></li>
+            <li class="layui-nav-item">
+                <a href="#">测试永升</a>
+                <dl class="layui-nav-child">
+                    <dd style="width: 300px;border: 1px solid;left: 40px;">
+                        <a href="#">第三层区域</a>
+                        <dl class="layui-nav-child">
+                            <dd style="width: 250px; left: 40px;">
+                                <a lay-href="#">第四片区</a>
+                            </dd>
+                        </dl>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="#">顺测试</a>
+                <dl class="layui-nav-child">
+                    <dd style="width: 300px;border: 1px solid;left: 40px;"><a href="#">哈哈</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="#">小文测试</a></li>
+            <li class="layui-nav-item"><a href="#">千丁测试小区成都地区</a></li>
+            <li class="layui-nav-item">
+                <a href="#">山东科创</a>
+                <dl class="layui-nav-child">
+                    <dd style="width: 300px;border: 1px solid;left: 40px;">
+                        <a href="#">青岛区</a>
+                    </dd>
+                    <dd style="width: 300px;border: 1px solid;left: 40px;">
+                        <a href="#">济南区</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 关联设施编号 -->
+    <form class="layui-form" action="" id="deviceForm" style="display: none;">
+        <div class="layui-form-item" style="margin-top:20px">
+            <div class="layui-inline">
+                <label class="layui-form-label">设施编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" placeholder="请输入设施编号" name="de_num" lay-verify="required" lay-reqText="未填写设施编号"
+                        class="layui-input" lay-filter="de_num" autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:20px">
+            <div class="layui-inline">
+                <label class="layui-form-label">设施名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" placeholder="请输入设施名称" name="de_name" lay-verify="required" lay-reqText="未填写设施名称"
+                        class="layui-input" lay-filter="de_name" autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="width:50px; margin-left:150px;">
+                <button class="layui-btn layui-btn-primary" id="deviceBtn" lay-submit
+                    lay-filter="deviceForm">查询</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <table style="margin-top: 30px;" id="deviceTable" lay-filter="deviceTable" lay-size="lg"></table>
+        </div>
+    </form>
+
+    <!-- 电梯使用单位 -->
+    <form class="layui-form" action="" lay-filter="elecUseForm" id="elecUseForm" style="display: none;">
+        <div class="layui-form-item" style="margin-top:20px">
+            <div class="layui-inline">
+                <label class="layui-form-label" style="width:100px;">使用单位名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" placeholder="请输入使用单位名称" name="use_name" lay-verify="required" class="layui-input"
+                        lay-filter="use_name" autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline" style="width:50px; margin-left:150px;">
+                <button class="layui-btn layui-btn-normal" id="elecUseBtn" lay-submit
+                    lay-filter="elecUseBtn">查询</button>
+            </div>
+            <div class="layui-input-inline" style="width:50px; margin-left:20px;">
+                <button type="button" class="layui-btn layui-btn-primary" id="useResetBtn">重置</button>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <table style="margin-top: 30px;" id="elecUseTable" lay-filter="elecUseTable"> </table>
+        </div>
+    </form>
+</body>
+
+
+</html>

@@ -1,0 +1,206 @@
+<!Doctype html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>后台数据展示</title>
+    <link rel="stylesheet" href="src/css/layui.css">
+
+</head>
+<style>
+    .layadmin-flexible {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 60px;
+    }
+
+    .layadmin-flexible a {
+        display: block;
+        padding: 0 20px;
+        color: rgba(255, 255, 255, .7);
+        transition: all .3s;
+        -webkit-transition: all .3s;
+    }
+
+    .layui-layout-left .layui-nav-item a {
+        font-size: 16px !important;
+    }
+
+    iframe {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    /* 
+
+    .qdy-nav {
+        position: relative;
+        height: 45px;
+        border: 1px solid #e4e7ed;
+        border-bottom: none;
+        border-radius: 4px 4px 0 0;
+        background-color: #ffffff;
+        left: 200px;
+        z-index: 1000;
+        width: calc(100% - 200px);
+    }
+
+    .qdy-nav ul {
+        width: 100%;
+        height: 100%;
+    }
+
+    .qdy-nav ul li {
+        position: relative;
+        height: 45px;
+        width: auto;
+        line-height: 45px;
+        padding: 0px 20px;
+    }
+
+    .qdy-nav .layui-text {
+        color: #409eff;
+        border-right: 1px solid #e4e7ed;
+        float: left;
+    }
+
+    .qdy-nav .last {
+        float: right;
+        border-right: none;
+        border-left: 1px solid #e4e7ed;
+        color: rgb(144, 147, 153);
+        cursor: pointer;
+        -webkit-transition: all 2s;
+        transition: all 2s;
+    } */
+    .layui-nav-itemed {
+        color: white;
+    }
+</style>
+
+<body class="layui-layout-body">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+        <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+        <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">
+                <img src="src/img/qd-logo.png" alt="">
+            </div>
+            <!-- 头部区域 -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layadmin-flexible" lay-unselect="" id="silder">
+                    <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩" style="font-size: 16px;color:white;">
+                        <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"
+                            style="color:white;font-size: 16px;"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">电梯管理 </a>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;">工单管理</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">电梯数据</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">人员管理</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">项目管理</a>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="src/img/qd-logo.png" class="layui-nav-img">
+                        Admin
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">退出</a></li>
+            </ul>
+        </div>
+        <!-- <div class="qdy-nav">
+            <ul>
+                <li class="layui-text">首页</li>
+                <li class="layui-text">电梯维护</li>
+                <li class="layui-text last">
+                    <span>操作</span>
+                    <i class="layui-icon layui-icon-down" style="font-size: 10px;"></i>
+                </li>
+            </ul>
+        </div> -->
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree layui-inline">
+                    <li class="layui-nav-item"><a href="#" data-src="html/basicData.html">基础数据</a></li>
+                    <li class="layui-nav-item"><a href="#" data-src="html/elevatorWh.html">电梯维护</a></li>
+                    <li class="layui-nav-item"><a href="#" data-src="html/facilityWh.html">设施维护</a></li>
+                    <li class="layui-nav-item"><a href="#" data-src="html/workOrder.html">工单查询</a></li>
+                    <li class="layui-nav-item"><a href="#" data-src="html/projectGL.html">项目管理</a></li>
+                    <li class="layui-nav-item"><a href="#" data-src="html/unitGL.html">单位管理</a></li>
+                    <li class="layui-nav-item"><a href="#" data-src="html/staffGL.html">人员管理</a></li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="layui-body" style="background-color: #F2F2F2; top:100px;">
+            <!-- 内容主体区域 -->
+            <!-- <div style="padding: 0px;">
+                <iframe id="iframe-page-content" src="html/elevatorGL.html" id="main" 
+                    frameborder="0"></iframe>
+            </div> -->
+            <div class="main_right">
+                <iframe frameborder="0" scrolling="yes" width="100%" style="height: 100%" src="html/elevatorWh.html"
+                    id="iframe-page-content">
+                </iframe>
+            </div>
+        </div>
+
+        <div class="layui-footer" style="background: gainsboro;">
+            <!-- 底部固定区域 -->
+            <p style="text-align: center;line-height: 44px;" class="layui-text"> Copyrights © 2014-2018 xxxxxxxxxxx有限公司
+                All Rights Reserved | 京ICP备xxxxxxxxx号</p>
+        </div>
+    </div>
+
+
+
+
+    <script src="src/layui.js"></script>
+    <script src="src/jquery1.12.3.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".layui-nav-item a").on("click", function () {
+                var path = $(this).attr("data-src");
+                $("iframe").attr("src", path);
+                $(this).addClass("layui-nav-itemed");
+                $(".layui-nav-item a").removeClass("layui-nav-itemed");
+            });
+            $("layui-nav-child dd>a").on("click", function () {
+                var path = $(this).attr("data-src");
+                $("iframe").attr("src", path);
+                $(this).addClass("layui-nav-itemed");
+                $(".layui-nav-item a").removeClass("layui-nav-itemed");
+            })
+
+            //根据窗口高度在设置iframe的高度
+            // var frame = $("#iframe-page-content");
+            // var frameheight = $(window).height();
+            // console.log(frameheight);
+            // frame.css("height", frameheight);
+        });
+    </script>
+</body>
+
+</html>

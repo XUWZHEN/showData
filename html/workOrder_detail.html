@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>工单详情页面</title>
+
+    <link href="../src/css/layui.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+<style>
+    #detail .layui-text {
+        height: 24px;
+        line-height: 24px;
+        margin-bottom: 20px;
+    }
+
+    #detail .layui-text .note {
+        color: #569aff;
+    }
+
+    #desc .layui-title {
+        color: #4F9EFA;
+        font-size: 16px;
+    }
+
+    #desc .text {
+        /* margin-top: 10px; */
+        height: 20px;
+        line-height: 20px;
+        margin-top: 10px;
+        font-size: 12px;
+    }
+    #desc .layui-text ul{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    #desc .layui-text ul li{
+        list-style: none;
+        border-top: 1px  dotted #4F9EFA;
+    }
+    #desc .img img{
+        width: 80px;
+        height: 80px;
+    }
+</style>
+
+<body>
+    <div style="padding: 15px; background-color: #F2F2F2;">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md6">
+                <div class="layui-card" id="detail">
+                    <div class="layui-card-header">工单详情</div>
+                    <div class="layui-card-body">
+                        <p class="layui-text">
+                            <span>工单类型：</span>
+                            <span class="note">电梯维修工单</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>项目：</span>
+                            <span>华润湾湾</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>报事人：</span>
+                            <span>徐康</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>手机号：</span>
+                            <span>13707912930</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>位置：</span>
+                            <span>2栋1单元楼厅</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>电梯编码：</span>
+                            <span>01-20180820-501508</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>生产编号：</span>
+                            <span>hb001</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>分类：</span>
+                            <span>垂直电梯</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>状态：</span>
+                            <span class="note">待完结</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>电梯名称：</span>
+                            <span>2栋1单元1号客梯</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>子系统：</span>
+                            <span>轿厢</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>故障现象/作业性质：</span>
+                            <span>不平层</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>工单编号：</span>
+                            <span>T201911141510802</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>电梯品牌：</span>
+                            <span>三菱</span>
+                        </p>
+                        <p class="layui-text">
+                            <span>工单描述：</span>
+                            <span>三菱的吗？</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card" id="desc">
+                    <div class="layui-card-header">事件描述</div>
+                    <div class="layui-card-body">
+                        <ul class="layui-timeline">
+                            <li class="layui-timeline-item">
+                                <i class="layui-icon layui-timeline-axis"></i>
+                                <div class="layui-timeline-content layui-text">
+                                    <h3 class="layui-timeline-title">2019-11-14 10:13:09</h3>
+                                    <div class="layui-text">
+                                        <h2 class="layui-title">待分配</h2>
+                                        <p class="text">APP处理：[徐康]创建维修工单</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="layui-timeline-item">
+                                <i class="layui-icon layui-timeline-axis"></i>
+                                <div class="layui-timeline-content layui-text">
+                                    <h3 class="layui-timeline-title">2019-12-02 10:35:35</h3>
+                                    <div class="layui-text">
+                                        <h2 class="layui-title">已接单</h2>
+                                        <p class="text">APP处理:抢单人 [苏岩]</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="layui-timeline-item">
+                                <i class="layui-icon layui-timeline-axis"></i>
+                                <div class="layui-timeline-content layui-text">
+                                    <h3 class="layui-timeline-title">2019-12-02 10:35:41</h3>
+                                    <div class="layui-text">
+                                        <h2 class="layui-title">处理中</h2>
+                                        <p class="text">APP处理:[苏岩] 开始处理工单 [2019-12-02
+                                            10:35:41]-[2栋1单元楼厅]-[01-20180820-501508]-[hb001]</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="layui-timeline-item">
+                                <i class="layui-icon layui-timeline-axis"></i>
+                                <div class="layui-timeline-content layui-text">
+                                    <h3 class="layui-timeline-title">2019-12-02 10:36:49</h3>
+                                    <div class="layui-text">
+                                        <h2 class="layui-title">已完成</h2>
+                                        <p class="text">APP处理:[苏岩] 完成工单.备注:[]</p>
+                                        <p class="text">故障主部件：操纵箱</p>
+                                        <p class="text">故障次部件：操纵开关</p>
+                                        <p class="text">故障原因：不平</p>
+                                        <p class="text">处理方式：技术调整</p>
+                                        <ul class="detail-img">
+                                            <li>
+                                                <p class="layui-text">
+                                                    <i class="layui-icon layui-icon-picture" style="font-size: 14px; color: #1E9FFF;"></i>  
+                                                    <span>旧故障部件照片</span>
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <p class="layui-text">
+                                                    <i class="layui-icon layui-icon-picture" style="font-size: 14px; color: #1E9FFF;"></i>  
+                                                    <span>新故障部件照片：</span>
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <p class="layui-text">
+                                                    <i class="layui-icon layui-icon-picture" style="font-size: 14px; color: #1E9FFF;"></i>  
+                                                    <span>跟进照片</span>
+                                                    <div class="img">
+                                                        <img src="https://img1.qdingnet.com/qiniu:qding:api:bc6f2f9a-8ea2-4ca8-a098-c00e235895aa.jpg?watermark/3/text/5YyX5Lqs5biC5pyd6Ziz5Yy65YyX6IuR6Lev6Z2g6L-R6bi_54Kc5Lq_5a625aSn6YWS5bqXKOWMl-iLkeW6lyk=/dissolve/30/fontsize/547/dx/10/dy/10/text/MjAxOS0xMi0wMiAxMDozNjo0OQ==/dissolve/30/fontsize/547/dx/10/dy/64/text/6IuP5bKp/dissolve/30/fontsize/547/dx/10/dy/118/text/5Y2O5ram5rm-5rm-/dissolve/30/fontsize/547/dx/10/dy/172" alt="">
+                                                    </div>
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="layui-timeline-item">
+                                <i class="layui-icon layui-timeline-axis"></i>
+                                <div class="layui-timeline-content layui-text">
+                                    <h3 class="layui-timeline-title">2019-12-02 10:36:49</h3>
+                                    <div class="layui-text">
+                                        <h2 class="layui-title">待完结</h2>
+                                        <p class="text">APP处理:[苏岩] 已完成.备注：[]</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- <li class="layui-timeline-item">
+                                <i class="layui-icon layui-timeline-axis"></i>
+                                <div class="layui-timeline-content layui-text">
+                                </div>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../src/layui.js"></script>
+    <script src="../src/jquery1.12.3.js"></script>
+</body>
+
+</html>

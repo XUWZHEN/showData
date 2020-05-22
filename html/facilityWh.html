@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>新增电梯页面</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+</head>
+<style>
+    .layui-form .first .layui-inline {
+        margin-top: 20px;
+    }
+
+    .btn-group {
+        position: relative;
+        margin-top: 50px;
+        width: 240px;
+        left: calc(100% - 240px);
+    }
+</style>
+
+<body class="admin-body">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+        <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+        <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <div class="layadmin-body">
+        <div class="layui-fluid" style="padding-top:15px">
+            <div class="layui-card">
+                <form class="layui-form">
+                    <div class="layui-form-item first">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span style="color: red;">*</span>位置</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="start" name="elePosition" lay-verify="required"
+                                    autocomplete="off" class="layui-input" placeholder="请输入要查询的位置"
+                                    lay-reqText="未填写要查询的位置">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label"><span style="color: red;">*</span>设施类别</label>
+                            <div class="layui-input-inline">
+                                <select name="quiz" lay-verify="required">
+                                    <option value="">请选择设施类别</option>
+                                    <option value="机房">机房</option>
+                                    <option value="控制柜">控制柜</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-btn-container" style="margin-left: 40px;">
+                                <button class="layui-btn layui-btn-normal first" style="margin-bottom: 0px;">查询</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <form class="layui-form">
+                    <div class="layui-btn-container btn-group" style="position: relative;">
+                        <button type="button" class="layui-btn layui-btn-sm" id="add_device">新增设施</button>
+                        <button type="button" class="layui-btn layui-btn-sm" id="revise_device">修改设施</button>
+                        <button type="button" class="layui-btn layui-btn-sm" id="del_device">删除设施</button>
+                    </div>
+                    <table class="layui-hide" id="facWhTable" lay-filter="facWhTable"></table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../src/layui.js"></script>
+    <script src="../src/jquery1.12.3.js"></script>
+    <script>
+
+        layui.use(['form', 'laydate', 'table', 'laypage', 'element'], function () {
+            var form = layui.form,
+                laydate = layui.laydate,
+                table = layui.table,
+                laypage = layui.page,
+                element = layui.element;
+
+            table.render({
+                elem: '#facWhTable'
+                , url: '../test5.json'
+                , title: '设施维护'
+                , page: true
+                , cols: [[
+                    { type: 'checkbox', fixed: 'right' }
+                    , { field: 'fac_name', title: '设施名称' }
+                    , { field: 'fac_type', title: '设施类别' }
+                    , { field: 'position', title: '具体位置' }
+                    , { field: 'hum', title: '湿度' }
+                    , { field: 'create_time', title: '创建时间' }
+                ]]
+
+            });
+
+
+
+            //新增/修改电梯配件方法
+            function changeAccList(url, title) {
+                layer.open({
+                    type: 1,
+                    title: title,
+                    area: ['500px', '450px'],
+                    setwin: ['min', 'max'],
+                    shadeClose: false,
+                    content: $("#addFacForm"),
+                    btn: ['保存', '取消'],
+                    skin: 'layui-layer-molv',
+                    success: function (index, layero) {
+                        form.on('submit(accBtn)', function (data) {
+                            $.ajax({
+                                url: url,
+                                dataType: "json",   //返回格式为json
+                                data: "",
+                                async: true,
+                                type: "get",   //请求方式
+                                success: function (res) {
+                                    var data = res.data;
+                                    if (res.code === 0) {
+
+                                        layer.msg('数据提交成功',
+                                            {
+                                                icon: 6,
+                                                time: 1000
+                                            }, function () {
+                                                location.href = "../html/facilityWh.html";
+                                            });
+                                    } else {
+                                        layer.msg('数据提交失败', { icon: 6 });
+                                    }
+                                },
+                                error: function () {
+                                    //请求出错处理
+                                    layer.msg('数据提交失败', { icon: 5 });
+                                }
+                            });
+                            return false;
+                        });
+
+                    },
+                    yes: function (index, layero) {
+                        $("#accBtn").click();
+                    },
+                    btn2: function (index, layero) { // 取消按钮回调函数
+                        layer.close(index); // 关闭弹出层
+                        location.href = "../html/facilityWh.html";
+                    }
+                });
+            };
+
+            //调用新增
+            $("#add_device").on("click", function () {
+                changeAccList("../test5.json", "新增设施");
+            });
+
+            // 调用修改
+            $("#revise_device").on("click", function () {
+                var checkStatus = table.checkStatus('facWhTable');
+                var arr = checkStatus.data;
+                if (arr.length == 0) {
+                    layer.alert("请先勾选需要修改的数据");
+                } else if (arr.length > 1) {
+                    layer.alert("每次只能勾选一条数据进行修改", function () {
+                        location.reload();
+                    });
+                } else {
+                    changeAccList("../test5.json", "修改配件");
+                    // 拿到接口进行table.render();重新渲染表格
+                }
+            });
+
+            // 删除摄像头
+            $("#del_device").on("click", function () {
+                var checkStatus = table.checkStatus('facWhTable');
+                var delArr = checkStatus.data;
+                var all = checkStatus.isAll;
+                if (delArr.length == 0) {
+                    layer.alert("请先勾选需要删除的数据");
+                } else if (all == true) {
+                    layer.alert("您确定要删除全部数据吗？", function (index) {
+                        // 点击确定按钮的回调函数：拿到接口重新渲染表格
+                        $.ajax({
+                            url: '../test5.json',
+                            dataType: "json",   //返回格式为json
+                            data: delArr,
+                            async: true,
+                            type: "get",   //请求方式
+                            success: function (res) {
+                                table.render({
+                                    elem: '#facWhTable'
+                                    , url: '../test5.json'
+                                    , page: true
+                                    , cols: [[
+                                        { type: 'checkbox', fixed: 'right' }
+                                        , { field: 'fac_name', title: '设施名称' }
+                                        , { field: 'fac_type', title: '设施类别' }
+                                        , { field: 'position', title: '具体位置' }
+                                        , { field: 'hum', title: '湿度' }
+                                        , { field: 'create_time', title: '创建时间' }
+                                    ]]
+                                });
+                                layer.msg('删除成功', { icon: 6 });
+                                layer.close(index);
+                            },
+                            error: function () {
+                                //请求出错处理
+                                layer.msg('删除失败', { icon: 5 });
+                                layer.close(index);
+                            }
+                        });
+                    });
+                } else {
+                    layer.alert('确定删除这' + delArr.length + '条数据吗', function (index) {
+                        $.ajax({
+                            url: '../test5.json',
+                            dataType: "json",   //返回格式为json
+                            data: delArr,
+                            async: true,
+                            type: "get",   //请求方式
+                            success: function (res) {
+                                table.render({
+                                    elem: '#facWhTable'
+                                    , url: '../test5.json'
+                                    , page: true
+                                    , cols: [[
+                                        { type: 'checkbox', fixed: 'right' }
+                                        , { field: 'fac_name', title: '设施名称' }
+                                        , { field: 'fac_type', title: '设施类别' }
+                                        , { field: 'position', title: '具体位置' }
+                                        , { field: 'hum', title: '湿度' }
+                                        , { field: 'create_time', title: '创建时间' }
+                                    ]]
+                                });
+                                layer.msg('删除成功', { icon: 6 });
+                                layer.close(index);
+                            },
+                            error: function () {
+                                //请求出错处理
+                                layer.msg('删除失败', { icon: 5 });
+                                layer.close(index);
+                            }
+                        });
+                    });
+                };
+            });
+
+        });
+    </script>
+
+    <!-- 新增/修改设施页面 -->
+    <form class="layui-form" action="" id="addFacForm" style="display: none;">
+        <div class="layui-form-item" style="margin-top: 20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label">设施ID：</label>
+                <!-- <div class="layui-input-inline">
+                    <input type="text" name="device_id" lay-verify="required" autocomplete="off" class="layui-input"
+                        value="2020-012-58214510" disabled>
+                </div> -->
+                <div class="layui-form-mid layui-word-aux" style="color: black;">2020-012-58214510</div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label">设施名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="device_name" lay-verify="required" autocomplete="off" class="layui-input"
+                        value="" placeholder="请输入设施名称">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label">设施类别</label>
+                <div class="layui-input-inline">
+                    <select name="accStatus" lay-verify="required">
+                        <option value="">请选择设施类别</option>
+                        <option value="机房">已失效</option>
+                        <option value="控制柜">控制柜</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label">具体位置</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="position" lay-verify="required" autocomplete="off" class="layui-input"
+                        placeholder="请选择具体位置">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:20px;">
+            <div class="layui-inline">
+                <label class="layui-form-label">湿*度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="hum" lay-verify="required" autocomplete="off" class="layui-input"
+                        placeholder="请输入湿*度">
+                </div>
+            </div>
+        </div>
+        <!-- 提交按钮 -->
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="width:50px;display: none;">
+                <button class="layui-btn layui-btn-primary" id="accBtn" lay-submit lay-filter="accBtn">保存</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+
+</html>

@@ -1,0 +1,41 @@
+{
+    "code": 0,
+    "msg": "暂无数据",
+    "data": [
+        {
+            "fac_name":"设施名称1",
+            "fac_type":"设施类别1",
+            "position":"具体位置1",
+            "hum":"湿度11",
+            "create_time": "2020-11-23"
+        },
+        {
+            "fac_name":"设施名称2",
+            "fac_type":"设施类别2",
+            "position":"具体位置2",
+            "hum":"湿度1221",
+            "create_time": "2020-02-23"
+        },
+        {
+            "fac_name":"设施名称3",
+            "fac_type":"设施类别3",
+            "position":"具体位置33",
+            "hum":"湿度133",
+            "create_time": "2020-01-23"
+        },
+        {
+            "fac_name":"设施名称4",
+            "fac_type":"设施类别4",
+            "position":"具体位置4",
+            "hum":"湿度1444",
+            "create_time": "2020-04-23"
+        },
+        {
+            "fac_name":"设施名称5",
+            "fac_type":"设施类别5",
+            "position":"具体位置15",
+            "hum":"湿度1551",
+            "create_time": "2020-08-23"
+        }
+    ]
+}

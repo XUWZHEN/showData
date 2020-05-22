@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/css/layui.css">
+    <title>登录</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .login-box {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        min-width: 1080px;
+        z-index: -10;
+        background-color: #fff;
+    }
+
+    .top-content img {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: auto;
+    }
+
+    .login-form {
+        /* border: 1px solid black; */
+        height: 600px;
+    }
+
+    .layui-form {
+        position: absolute;
+        width: 350px;
+        height: 450px;
+        right: 0px;
+        /* left: 350px; */
+        top: 110px;
+        background: rgba(40, 40, 40, .8);
+        border-radius: 10px;
+        /* background: rgba(255,255,255); */
+        /* box-shadow:0 1px 2px 0 rgba(0,0,0,.5); */
+    }
+
+    .layui-h1 {
+        text-align: center;
+        color: white;
+        line-height: 70px;
+    }
+
+    .login-title {
+        position: relative;
+        width: 100%;
+        height: 60px;
+        /* background: rgba(0, 150, 136, .6); */
+        margin-bottom: 20px;
+        margin-top: 20px;
+
+    }
+
+    .layui-form-label {
+        color: white;
+    }
+
+    .layui-input:focus {
+        border: 1px solid #009688 !important;
+    }
+
+    .layui-form-item {
+        margin-bottom: 25px;
+    }
+
+    #canvas {
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        cursor: pointer;
+        float: right;
+        width: 90px;
+        height: 38px;
+        background: white;
+        margin-right: 70px;
+    }
+
+    .layui-text {
+        display: block;
+        width: 100px;
+        font-weight: 400;
+        line-height: 20px;
+        padding-left: 25px;
+    }
+
+    .layui-footer {
+        position: absolute;
+        bottom: 0;
+        font-size: 14px;
+        color: #9ba7af;
+        background: #373d42;
+        width: 100%;
+        z-index: 5;
+        height: 90px;
+        max-height: 100px;
+    }
+
+    .layui-footer .layui-main {
+        height: 70px;
+        margin-top: 10px;
+    }
+
+    .layui-ul li {
+        float: left;
+        margin-right: 20px;
+        height: 35px;
+        line-height: 35px;
+    }
+
+    .copy-text {
+        color: #626f79;
+        height: 35px;
+        line-height: 35px;
+    }
+</style>
+
+<body>
+    <div class="login-box">
+        <div class="top-content">
+            <div class="login-bg">
+                <img src="./src/img/qdy-bg.jpg" alt="">
+            </div>
+            <div class="login-form layui-main">
+                <form class="layui-form" lay-filter="qdyForm" action="">
+                    <div class="login-title">
+                        <h1 class="layui-h1">登录</h1>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="username" required lay-verify="required" lay-reqText="用户名不能为空"
+                                placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="password" required lay-verify="required" lay-reqText="密码不能为空"
+                                placeholder="请输入密码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline" style="width: 100%;">
+                            <label class="layui-form-label">验证码</label>
+                            <input type="text" name="code" required lay-verify="required" lay-reqText="验证码不能为空"
+                                placeholder="请输入验证码" autocomplete="off" class="layui-input input-val"
+                                style="display: inline-block; width: 100px;">
+                            <canvas id="canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="layui-text" style="margin-bottom: 20px;">
+                        <a href="#">忘记密码？</a>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block" style="margin-left:25px;">
+                            <button class="layui-btn" lay-submit lay-filter="loginBtn" style="width: 300px;">登录</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+         <!-- 底部固定区域 -->
+    <div class="layui-footer">
+        <div class="layui-main">
+            <ul class="layui-ul">
+                <li>关于我们</li>
+                <li>联系我们</li>
+            </ul>
+            <div class="layui-decs layui-clear">
+                <p class="copy-text">
+                    Copyrights © 2014-2018 xxxxxxxxxxx有限公司 All Rights Reserved | 京ICP备xxxxxxxxx号
+                </p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+   
+
+    <script src="src/jquery1.12.3.js"></script>
+    <script src="./src/layui.js"></script>
+    <script src="src/js/suiji.js"></script>
+    <script type="text/javascript">
+      layui.config({
+            base: 'res/js/'
+        }).use('index');
+        var show_num = [];
+        // 表单提交
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('submit(loginBtn)', function (data) {
+                console.log(data.field);
+
+                var val = $(".input-val").val().toLowerCase();
+                var num = show_num.join("");
+                if (val == "") {
+                    layer.msg("请输入验证码", {
+                        icon: 7,
+                        time: 2000
+                    }, function () { })
+                } else if (val == num) {     //验证码正确
+                    var username = data.field.username;
+                    var pswd = data.field.pswd;
+                    $.ajax({
+                        type: "POST",
+                        url: "index.html",
+                        data: data.field,
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if (res.status == 200) {
+                                layer.msg("登录成功", { icon: 6 }, function () {
+                                    window.location.href = "index.html";
+                                });
+                            } else {
+                                layer.alert("登录失败", { icon: 5 });
+                            }
+                        },
+                        error:function(){
+                            layer.alert("登录失败", { icon: 5 });
+                            // window.location.href = "index.html";
+                        }
+                    });
+        } else {
+            console.log(val);
+            console.log(num);
+            layer.msg("验证码有误，请重新输入", {
+                icon: 5,
+                time: 2000
+            }, function () { });
+            $(".input-val").val("");
+            draw(show_num);
+        }
+
+                return false;
+            });
+        });
+
+        $(document).ready(function () {
+            draw(show_num);
+            $("#canvas").on("click", function () {
+                draw(show_num);
+            });
+        });
+    </script>
+
+</body>
+
+</html>

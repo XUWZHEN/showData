@@ -1,0 +1,41 @@
+{
+    "code": 0,
+    "msg": "暂无数据",
+    "data": [
+        {
+            "id":10010012162,
+            "accName":"配件11",
+            "accStatus":"良好",
+            "accWork":"2020-02-05",
+            "accDate": "两年"
+        },
+        {
+            "id":10010012158,
+            "accName":"配件2",
+            "accStatus":"磨损",
+            "accWork":"2019-11-05",
+            "accDate": "五年"
+        },
+        {
+            "id":10010012123,
+            "accName":"配件3",
+            "accStatus":"磨损严重",
+            "accWork":"2019-5-05",
+            "accDate": "10个月"
+        },
+        {
+            "id":10010016541,
+            "accName":"配件4",
+            "accStatus":"较新",
+            "accWork":"2020-05-11",
+            "accDate": "一个星期"
+        },
+        {
+            "id":10010010014,
+            "accName":"配件5",
+            "accStatus":"破损",
+            "accWork":"2020-03-30",
+            "accDate": "三年"
+        }
+    ]
+}
